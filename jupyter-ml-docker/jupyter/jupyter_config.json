@@ -1,0 +1,5 @@
+{
+  "CondaKernelSpecManager": {
+    "name_format": "{environment}"
+  }
+}
