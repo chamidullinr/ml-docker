@@ -17,7 +17,7 @@ RUN apt-get update --yes && \
     # for matplotlib anim
     ffmpeg \
     # other
-    vim && \
+    vim \
     htop && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
