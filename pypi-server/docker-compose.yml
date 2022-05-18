@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+    pypiserver:
+        image: pypiserver/pypiserver:latest
+        volumes:
+            - './auth:/data/auth'
+            - './packages:/data/packages'
+        ports:
+          - '8080:8080'
+        command: -P /data/auth/.htpasswd -a update /data/packages
