@@ -1,4 +1,4 @@
-name: scipy
+name: cv
 dependencies:
   - python=3.8
   - ipykernel
