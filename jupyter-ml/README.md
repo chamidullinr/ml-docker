@@ -9,7 +9,7 @@ Run the following commands to build and start the image:
 ```bash
 docker build -t chamidullinr/jupyter-ml .
 
-docker run -p 8888:8888 chamidullinr/jupyter-ml
+docker run -p 8888:8888 --name=jupyter-ml chamidullinr/jupyter-ml 
 ```
 
 Run the following command inside Docker image to create a new conda environment:
