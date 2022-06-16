@@ -56,6 +56,11 @@ RUN rm -rf packages
 # add jupyter config
 COPY jupyter/jupyter_config.json /home/jovyan/.jupyter/jupyter_config.json
 
-USER ${NB_UID}
-
 WORKDIR "${HOME}"
+
+# install AWS cli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install
+
+USER ${NB_UID}
