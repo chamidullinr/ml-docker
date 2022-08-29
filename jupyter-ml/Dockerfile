@@ -31,20 +31,16 @@ RUN mamba install --quiet --yes \
 
 # create conda environment and install python packages
 COPY packages packages
-# scipy
-RUN conda env create -f packages/env_scipy.yml
-SHELL ["conda","run","-n","scipy","/bin/bash","-c"]
-RUN pip install -U -r packages/requirements_scipy.txt
-
-# Import matplotlib the first time to build the font cache.
-ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
-RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
-    fix-permissions "/home/${NB_USER}"
 
 # computer vision (cv)
 RUN conda env create -f packages/env_cv.yml
 SHELL ["conda","run","-n","cv","/bin/bash","-c"]
 RUN pip install -U -r packages/requirements_cv.txt
+
+# import matplotlib the first time to build the font cache.
+ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
+RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
+    fix-permissions "/home/${NB_USER}"
 
 # natural language processing (nlp)
 RUN conda env create -f packages/env_nlp.yml
