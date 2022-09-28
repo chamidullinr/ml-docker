@@ -3,6 +3,7 @@ version: "3.8"
 services:
   pypiserver:
     image: pypiserver/pypiserver:latest
+    container_name: pypiserver
     volumes:
         - ./auth:/data/auth
         - packages-data:/data/packages
