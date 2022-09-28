@@ -24,6 +24,10 @@ See [deployment description](./worker-node/README.md).
 ## Exporters
 
 System exporters:
+* [Node exporter](https://github.com/prometheus/node_exporter) -
+exports hardware and OS metrics.
+* [cAdvisor](https://github.com/google/cadvisor) -
+exports information about running containers.
 * [NVIDIA GPU exporter](https://github.com/mindprince/nvidia_gpu_prometheus_exporter) -
 exports NVIDIA GPU metrics.
 
