@@ -1,2 +1,3 @@
-./auth/.htpasswd
-./packages/*
+auth/.htpasswd
+packages/*.tar.gz
+packages/*.whl

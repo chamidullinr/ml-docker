@@ -1,9 +1,9 @@
 # Jupyter Docker Image for Machine Learning
 
-The Docker image definition inherits from [jupyter-minimal-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-minimal-notebook)
+The Docker image inherits from [jupyter-minimal-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-minimal-notebook)
 and includes conda environments:
-* **Conda Scipy** with `Python=3.8` and packages like `numpy`, `pandas`, `matplotlib`, etc.
-* **Conda PyTorch** with `Python=3.8` and packages like `torch=1.10.1` and `torchvision=0.11.2`
+* **cv** with `Python=3.8` and packages like `pytorch`, `timm`, `opencv`, etc.
+* **nlp** with `Python=3.8` and packages like `pytorch`, `transformers`, and `datasets`.
 
 Run the following commands to build and start the image:
 ```bash
