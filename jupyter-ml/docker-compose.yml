@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  jupyter-ml:
+    image: chamidullinr/jupyter-ml
+    build: .
+    container_name: jupyter-ml
+    volumes:
+        - ~/Documents:/home/jovyan/work
+    ports:
+      - "8888:8888"
+    user: root
+    environment:
+      - "GRANT_SUDO=yes"
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: "12g"
+
+volumes:
+  packages-data:
