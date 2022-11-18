@@ -20,22 +20,14 @@ to a `/data/auth` directory in the image.
 sudo apt-get install apache2-utils
 
 # create .htpasswd file and include a user with a hashed password
-mkdir ./auth
 touch ./auth/.htpasswd
 htpasswd -sc ./auth/.htpasswd [USERNAME]
-```
-
-Next, create a `./packages` directory to store packages locally.
-The local `./packages` directory will be mounted
-to a `/data/packages` directory in the image.
-```bash
-mkdir ./packages
 ```
 
 ## Run
 Run the `docker-compose` command to start the image.
 ```bash
-docker-compose up pypiserver
+docker-compose up
 ```
 
 Note: It is possible to set actions (update, download, lost) 
