@@ -1,21 +1,12 @@
-numpy
-pandas
-scipy
-scikit-learn
-statsmodels
-matplotlib
-seaborn
-pyarrow
-tqdm
-
 opencv-python
 Pillow
-albumentations
-timm
 
+# pytoch
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
 torchvision
 
+# auxiliary packages
+albumentations
+timm
 onnxruntime
-mlflow

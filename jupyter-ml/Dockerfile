@@ -16,13 +16,21 @@ RUN apt-get update --yes && \
     dvipng \
     # for matplotlib anim
     ffmpeg \
+    # for R
+    fonts-dejavu \
+    unixodbc \
+    unixodbc-dev \
+    r-cran-rodbc \
+    gfortran \
+    gcc \
     # other
     vim \
     curl \
     htop && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# USER ${NB_UID}
+USER ${NB_UID}
+
 RUN mamba install --quiet --yes \
     'nb_conda_kernels' && \
     mamba clean --all -f -y && \
@@ -35,17 +43,22 @@ COPY packages packages
 # computer vision (cv)
 RUN conda env create -f packages/env_cv.yml
 SHELL ["conda","run","-n","cv","/bin/bash","-c"]
-RUN pip install -U -r packages/requirements_cv.txt
+RUN pip install -U -r packages/requirements_scipy.txt && \
+    pip install -U -r packages/requirements_cv.txt
 
 # import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
     fix-permissions "/home/${NB_USER}"
 
-# natural language processing (nlp)
-RUN conda env create -f packages/env_nlp.yml
-SHELL ["conda","run","-n","nlp","/bin/bash","-c"]
-RUN pip install -U -r packages/requirements_nlp.txt
+## natural language processing (nlp)
+#RUN conda env create -f packages/env_nlp.yml
+#SHELL ["conda","run","-n","nlp","/bin/bash","-c"]
+#RUN pip install -U -r packages/requirements_scipy.txt && \
+#    pip install -U -r packages/requirements_nlp.txt
+
+# R
+RUN conda env create -f packages/env_R.yml
 
 RUN rm -rf packages
 
