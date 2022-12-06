@@ -42,17 +42,17 @@ RUN mamba install --quiet --yes \
 COPY packages packages
 
 # Python - scipy
-RUN conda env create -n scipy python=3.8 ipykernel ipywidgets
+RUN conda create -n scipy python=3.8 ipykernel ipywidgets
 SHELL ["conda","run","-n","scipy","/bin/bash","-c"]
 RUN pip install -U -r packages/requirements_scipy.txt
 
 # Python - computer vision (cv)
-RUN conda env create -n cv python=3.8 ipykernel ipywidgets
+RUN conda create -n cv python=3.8 ipykernel ipywidgets
 SHELL ["conda","run","-n","cv","/bin/bash","-c"]
 RUN pip install -U -r packages/requirements_scipy.txt -r packages/requirements_cv.txt
 
 # Python - natural language processing (nlp)
-RUN conda env create -n nlp python=3.8 ipykernel ipywidgets
+RUN conda create -n nlp python=3.8 ipykernel ipywidgets
 SHELL ["conda","run","-n","nlp","/bin/bash","-c"]
 RUN pip install -U -r packages/requirements_scipy.txt -r packages/requirements_nlp.txt
 
