@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   pypiserver:
+    restart: always
     image: pypiserver/pypiserver:latest
     container_name: pypiserver
     volumes:
