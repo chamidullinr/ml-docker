@@ -6,17 +6,15 @@ services:
     build: .
     container_name: jupyter-ml
     volumes:
-        - ~/Documents:/home/jovyan/work
+        - ~/Projects:/Projects
     ports:
       - "8888:8888"
-    user: root
     environment:
       - "GRANT_SUDO=yes"
+      - "NB_USER=jovyan"
+      - "CHOWN_HOME=yes"
     deploy:
       resources:
         limits:
           cpus: "2.0"
           memory: "12g"
-
-volumes:
-  packages-data:

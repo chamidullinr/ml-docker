@@ -1,5 +1,0 @@
-name: nlp
-dependencies:
-  - python=3.8
-  - ipykernel
-  - ipywidgets

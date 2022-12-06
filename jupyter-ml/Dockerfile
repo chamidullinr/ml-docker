@@ -29,7 +29,8 @@ RUN apt-get update --yes && \
     htop && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-USER ${NB_UID}
+#USER ${NB_UID}
+WORKDIR "${HOME}"
 
 RUN mamba install --quiet --yes \
     'nb_conda_kernels' && \
@@ -40,36 +41,38 @@ RUN mamba install --quiet --yes \
 # create conda environment and install python packages
 COPY packages packages
 
-# computer vision (cv)
-RUN conda env create -f packages/env_cv.yml
+# Python - scipy
+RUN conda env create -n scipy python=3.8 ipykernel ipywidgets
+SHELL ["conda","run","-n","scipy","/bin/bash","-c"]
+RUN pip install -U -r packages/requirements_scipy.txt
+
+# Python - computer vision (cv)
+RUN conda env create -n cv python=3.8 ipykernel ipywidgets
 SHELL ["conda","run","-n","cv","/bin/bash","-c"]
-RUN pip install -U -r packages/requirements_scipy.txt && \
-    pip install -U -r packages/requirements_cv.txt
+RUN pip install -U -r packages/requirements_scipy.txt -r packages/requirements_cv.txt
 
-# import matplotlib the first time to build the font cache.
-ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
-RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
-    fix-permissions "/home/${NB_USER}"
-
-## natural language processing (nlp)
-#RUN conda env create -f packages/env_nlp.yml
-#SHELL ["conda","run","-n","nlp","/bin/bash","-c"]
-#RUN pip install -U -r packages/requirements_scipy.txt && \
-#    pip install -U -r packages/requirements_nlp.txt
+# Python - natural language processing (nlp)
+RUN conda env create -n nlp python=3.8 ipykernel ipywidgets
+SHELL ["conda","run","-n","nlp","/bin/bash","-c"]
+RUN pip install -U -r packages/requirements_scipy.txt -r packages/requirements_nlp.txt
 
 # R
 RUN conda env create -f packages/env_R.yml
 
 RUN rm -rf packages
 
+# import matplotlib the first time to build the font cache.
+ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
+RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
+    fix-permissions "/home/${NB_USER}"
+
 # add jupyter config
 COPY jupyter/jupyter_config.json /home/jovyan/.jupyter/jupyter_config.json
-
-WORKDIR "${HOME}"
 
 # install AWS cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install
 
+WORKDIR /
 USER ${NB_UID}
