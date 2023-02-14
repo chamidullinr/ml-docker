@@ -1,12 +1,4 @@
 opencv-python
 Pillow
-
-# pytoch
---extra-index-url https://download.pytorch.org/whl/cpu
-torch
-torchvision
-
-# auxiliary packages
 albumentations
 timm
-onnxruntime

@@ -15,15 +15,15 @@ docker run -p 8888:8888 --name=jupyter-ml chamidullinr/jupyter-ml
 Optionally, start the image with additional parameters:
 ```bash
 docker run \
-	-p 8888:8888 \
-	-v ~/Documents:/home/jovyan/work \
-	-u root \
-	-e GRANT_SUDO=yes \
-	--cpus="2.0" \
-	--memory="12g" \
-	--name jupyter-ml \
-	--detach \
-	chamidullinr/jupyter-ml
+  -p 8888:8888 \
+  -v ~/Documents:/home/jovyan/work \
+  -u root \
+  -e GRANT_SUDO=yes \
+  --cpus="2.0" \
+  --memory="12g" \
+  --name jupyter-ml \
+  --detach \
+  chamidullinr/jupyter-ml
 ```
 The parameters are:
 * `--publish`, `-p` - Publish a container's port(s) to the host

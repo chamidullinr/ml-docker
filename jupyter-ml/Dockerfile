@@ -1,12 +1,20 @@
 # Start from a core stack version
 FROM jupyter/minimal-notebook
 
+ARG PYTHON_VERSION=3.9
+ARG CREATE_R_CONDA_ENV=no
+ARG INSTALL_GIT_LFS=no
+ARG INSTALL_AWS_CLI=no
+
 # Fix: https://github.com/hadolint/hadolint/wiki/DL4006
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
+WORKDIR "${HOME}"
 
+
+# install ubuntu packages
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
     # for cython: https://cython.readthedocs.io/en/latest/src/quickstart/install.html
@@ -16,63 +24,90 @@ RUN apt-get update --yes && \
     dvipng \
     # for matplotlib anim
     ffmpeg \
-    # for R
-    fonts-dejavu \
-    unixodbc \
-    unixodbc-dev \
-    r-cran-rodbc \
-    gfortran \
-    gcc \
     # other
     vim \
     curl \
-    htop && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    rsync \
+    iputils-ping \
+    traceroute \
+    htop \
+    ncdu
 
-#USER ${NB_UID}
-WORKDIR "${HOME}"
 
+# install git lfs
+RUN if [ "$INSTALL_GIT_LFS" = "yes" ]; then \
+    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
+    apt-get install git-lfs; \
+    fi
+
+
+# install AWS cli
+RUN if [ "$INSTALL_AWS_CLI" = "yes" ]; then \
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install; \
+    fi
+
+
+# install conda packages
 RUN mamba install --quiet --yes \
     'nb_conda_kernels' && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# create conda environment and install python packages
+
+# create conda environments and install python packages
 COPY packages packages
 
 # Python - scipy
-RUN conda create -n scipy python=3.8 ipykernel ipywidgets
-SHELL ["conda","run","-n","scipy","/bin/bash","-c"]
+RUN conda create --name scipy python="$PYTHON_VERSION" ipykernel ipywidgets
+SHELL ["conda", "run", "-n", "scipy", "/bin/bash", "-c"]
 RUN pip install -U -r packages/requirements_scipy.txt
 
+# Python - pytorch (pytorch)
+RUN conda create --name pytorch --clone scipy
+SHELL ["conda", "run", "-n", "pytorch", "/bin/bash", "-c"]
+RUN pip install -U -r packages/requirements_pytorch.txt
+
 # Python - computer vision (cv)
-RUN conda create -n cv python=3.8 ipykernel ipywidgets
-SHELL ["conda","run","-n","cv","/bin/bash","-c"]
-RUN pip install -U -r packages/requirements_scipy.txt -r packages/requirements_cv.txt
+RUN conda create --name cv --clone pytorch
+SHELL ["conda", "run", "-n", "cv", "/bin/bash", "-c"]
+RUN pip install -U -r packages/requirements_cv.txt
 
 # Python - natural language processing (nlp)
-RUN conda create -n nlp python=3.8 ipykernel ipywidgets
-SHELL ["conda","run","-n","nlp","/bin/bash","-c"]
-RUN pip install -U -r packages/requirements_scipy.txt -r packages/requirements_nlp.txt
+RUN conda create --name nlp --clone pytorch
+SHELL ["conda", "run", "-n", "nlp", "/bin/bash", "-c"]
+RUN pip install -U  -r packages/requirements_nlp.txt
 
 # R
-RUN conda env create -f packages/env_R.yml
+RUN if [ "$INSTALL_AWS_CLI" = "yes" ]; then \
+    apt-get install --yes --no-install-recommends \
+        fonts-dejavu \
+        unixodbc \
+        unixodbc-dev \
+        r-cran-rodbc \
+        gfortran \
+        gcc && \
+    conda env create -f packages/env_R.yml; \
+    fi
 
 RUN rm -rf packages
+
 
 # import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
     fix-permissions "/home/${NB_USER}"
 
+
 # add jupyter config
 COPY jupyter/jupyter_config.json /home/jovyan/.jupyter/jupyter_config.json
 
-# install AWS cli
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    ./aws/install
+
+# clean apt cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /
 USER ${NB_UID}
