@@ -1,4 +1,4 @@
-# Nginx Certbot
+# Nginx with Certbot Configuration
 
 The Docker image inherits from [Nginx](https://hub.docker.com/_/nginx) and includes [Certbot](https://certbot.eff.org/) installation.
 Certbot is an ACME client recommended by Let's Encrypt certificate authority that automates certificate issuance and installation with no downtime.

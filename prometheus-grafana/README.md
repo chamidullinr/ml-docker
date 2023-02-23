@@ -1,4 +1,4 @@
-# Prometheus and Grafana
+# Prometheus and Grafana Configuration
 
 The project contains configuration to set up and deploy docker containers with Prometheus, Grafana, and exporters.
 Exporters collect and provide metrics to Prometheus.

@@ -1,50 +1,33 @@
-# Jupyter Docker Image for Machine Learning
+# Jupyterlab Docker Image for Machine Learning on CPU
 
 The Docker image inherits from [jupyter-minimal-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-minimal-notebook)
-and includes conda environments:
-* **cv** with `Python=3.8` and packages like `pytorch`, `timm`, `opencv`, etc.
-* **nlp** with `Python=3.8` and packages like `pytorch`, `transformers`, and `datasets`.
+and includes various `conda` environments useful for ML, CV, and NLP:
+* **scipy** with `python` packages like `numpy`, `scipy`, `scikit-lears`, `pandas`, etc.
+* **pytorch** with `python` packages from **scipy** and `pytorch` for CPU. 
+* **cv** with `python` packages from **pytorch** and `timm`, `albumentations`, `opencv`, etc.
+* **nlp** with `python` packages from **pytorch** and `transformers`, `datasets`.
 
-## Docker
-Run the following commands to build and start the image:
-```bash
-docker build -t chamidullinr/jupyter-ml .
-docker run -p 8888:8888 --name=jupyter-ml chamidullinr/jupyter-ml 
-```
+Optionally, the `Dockerfile` enables to install `Git LFS` and `AWS CLI` tools.
 
-Optionally, start the image with additional parameters:
-```bash
-docker run \
-  -p 8888:8888 \
-  -v ~/Documents:/home/jovyan/work \
-  -u root \
-  -e GRANT_SUDO=yes \
-  --cpus="2.0" \
-  --memory="12g" \
-  --name jupyter-ml \
-  --detach \
-  chamidullinr/jupyter-ml
-```
-The parameters are:
-* `--publish`, `-p` - Publish a container's port(s) to the host
-* `--volume`, `-v` - Bind mount a volume
-  * Use `//c/Users/username/Documents:/home/jovyan/work` for Windows host.
-* `--user`, `-u` - Username or UID (format: <name|uid>[:<group|gid>])
-* `--env`, `-e` - Set environment variables
-  * Parameter `GRANT_SUDO=yes` is Jupyter Docker specific to use root user, e.g. for `sudo apt install`.
-* `--cpus` - Number of CPUs
-* `--memory`, `-m` - Memory limit
-* `--detach`, `-d` - Run container in background and print container ID
+The image is developed and tested for CPU-based environments.
+For systems with GPU it is recommended to use Nvidia NGC images like `nvcr.io/nvidia/pytorch` as a base. 
 
-## Docker Compose
-Alternatively, build and start the image using `docker-compose`:
+## Get Started
+Modify configuration in `docker-compose.yml`.
+* Bind volumes.
+* Modify resource limits, default values are `cpus=2.0` and `memory=12g`.
+* Set build arguments like `PYTHON_VERSION`, `CREATE_R_CONDA_ENV=yes/no`, `INSTALL_GIT_LFS=yes/no`, `INSTALL_AWS_CLI=yes/no`.
+
+Optionally, add desired packages to requirements files in `packages` directory.
+
+Then, run `docker-compose`.
 ```bash
 docker-compose build
 docker-compose up -d
 ```
 
-## Conda Environment
-Run the following command inside Docker image to create a new conda environment:
+### Create Conda Environments
+Run the following command inside Docker image (e.g. in Jupyterlab terminal) to create a new conda environment:
 ```bash
 conda create -n <NAME> python=<VERSION> ipykernel
 ```

@@ -1,4 +1,4 @@
-# PyPI Server Docker Image
+# PyPI Server Configuration
 
 The Docker image is an official image `pypiserver/pypiserver:latest`
 which includes [pypiserver](https://github.com/pypiserver/pypiserver) -

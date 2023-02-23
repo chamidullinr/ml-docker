@@ -1,4 +1,4 @@
-# Jupyter Docker Image with OpenMMLab dependencies
+# Jupyterlab Docker Image with OpenMMLab dependencies
 
 The Docker image definition inherits from [jupyter-minimal-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-minimal-notebook)
 and includes Computer Vision packages like:
