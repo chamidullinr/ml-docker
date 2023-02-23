@@ -1,3 +1,3 @@
 # Docker Images for Machine Learning
 
-The repository with Docker and Docker Compose configs.
+Repository with Docker images and Docker Compose configs for machine learning.
