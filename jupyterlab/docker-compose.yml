@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  jupyter-ml:
-    image: chamidullinr/jupyter-ml
+  jupyterlab:
+    image: chamidullinr/jupyterlab
     build:
       context: .
       args:
@@ -10,7 +10,7 @@ services:
         - CREATE_R_CONDA_ENV=no
         - INSTALL_GIT_LFS=yes
         - INSTALL_AWS_CLI=no
-    container_name: jupyter-ml
+    container_name: jupyter
     ports:
       - "8888:8888"
 #    network_mode: "host"

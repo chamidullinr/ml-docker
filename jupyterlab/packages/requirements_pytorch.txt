@@ -5,3 +5,13 @@ torchvision
 
 # auxiliary packages
 onnxruntime
+
+# compute vision
+opencv-python
+Pillow
+timm
+albumentations
+
+# nlp
+transformers
+datasets

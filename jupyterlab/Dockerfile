@@ -1,5 +1,5 @@
 # Start from a core stack version
-FROM jupyter/minimal-notebook
+FROM jupyter/minimal-notebook:2023-02-13
 
 ARG PYTHON_VERSION=3.9
 ARG CREATE_R_CONDA_ENV=no
@@ -57,6 +57,10 @@ RUN mamba install --quiet --yes \
     fix-permissions "/home/${NB_USER}"
 
 
+# install jupyterlab extensions
+RUN pip install -U jupyterlab-git
+
+
 # create conda environments and install python packages
 COPY packages packages
 
@@ -69,16 +73,6 @@ RUN pip install -U -r packages/requirements_scipy.txt
 RUN conda create --name pytorch --clone scipy
 SHELL ["conda", "run", "-n", "pytorch", "/bin/bash", "-c"]
 RUN pip install -U -r packages/requirements_pytorch.txt
-
-# Python - computer vision (cv)
-RUN conda create --name cv --clone pytorch
-SHELL ["conda", "run", "-n", "cv", "/bin/bash", "-c"]
-RUN pip install -U -r packages/requirements_cv.txt
-
-# Python - natural language processing (nlp)
-RUN conda create --name nlp --clone pytorch
-SHELL ["conda", "run", "-n", "nlp", "/bin/bash", "-c"]
-RUN pip install -U  -r packages/requirements_nlp.txt
 
 # R
 RUN if [ "$INSTALL_AWS_CLI" = "yes" ]; then \
