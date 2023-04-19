@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   jupyterlab:
-    image: chamidullinr/jupyterlab
+    image: chamidullinr/jupyterlab:1.0.0
     build:
       context: .
       args:

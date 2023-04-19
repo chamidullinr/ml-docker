@@ -3,9 +3,7 @@
 The Docker image inherits from [jupyter-minimal-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-minimal-notebook)
 and includes various `conda` environments useful for ML, CV, and NLP:
 * **scipy** with `python` packages like `numpy`, `scipy`, `scikit-lears`, `pandas`, etc.
-* **pytorch** with `python` packages from **scipy** and `pytorch` for CPU. 
-* **cv** with `python` packages from **pytorch** and `timm`, `albumentations`, `opencv`, etc.
-* **nlp** with `python` packages from **pytorch** and `transformers`, `datasets`.
+* **pytorch** with `python` packages from **scipy** and `pytorch` for CPU.
 
 Optionally, the `Dockerfile` enables to install `Git LFS` and `AWS CLI` tools.
 
