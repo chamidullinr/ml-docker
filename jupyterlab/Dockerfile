@@ -1,5 +1,5 @@
 # Start from a core stack version
-FROM jupyter/minimal-notebook:2023-02-13
+FROM jupyter/minimal-notebook:2023-09-04
 
 ARG PYTHON_VERSION=3.9
 ARG CREATE_R_CONDA_ENV=no
@@ -51,7 +51,8 @@ RUN if [ "$INSTALL_AWS_CLI" = "yes" ]; then \
 
 # install conda packages
 RUN mamba install --quiet --yes \
-    'nb_conda_kernels' && \
+    'nb_conda_kernels' \
+    ipywidgets && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
