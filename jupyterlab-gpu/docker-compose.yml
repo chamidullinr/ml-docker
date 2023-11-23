@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  jupyterlab:
+    restart: always
+    image: ${JUPYTER_IMAGE:-nvidia-pytorch-jupyter}${TAG:-:latest}
+    build: .
+    container_name: jupyterlab-gpu
+    ports:
+      - "8889:8889"
+    volumes:
+      - "jupyter-data:/root/.jupyter"
+    ipc: "host"
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    deploy:
+      resources:
+        limits:
+          cpus: "3.0"
+          memory: "16g"
+        reservations:
+          devices:
+            - capabilities: [ "gpu" ]
+              driver: nvidia
+              count: all
+
+
+volumes:
+  jupyter-data:

@@ -10,7 +10,7 @@ services:
         - CREATE_R_CONDA_ENV=no
         - INSTALL_GIT_LFS=yes
         - INSTALL_AWS_CLI=no
-    container_name: jupyter
+    container_name: jupyterlab
     ports:
       - "8888:8888"
     volumes:
