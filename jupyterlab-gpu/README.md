@@ -15,9 +15,3 @@ Then, run `docker-compose`.
 docker-compose build
 docker-compose up -d
 ```
-
-### Create Conda Environments
-Run the following command inside Docker image (e.g. in Jupyterlab terminal) to create a new conda environment:
-```bash
-conda create -n <NAME> python=<VERSION> ipykernel
-```
