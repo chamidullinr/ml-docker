@@ -1,0 +1,19 @@
+services:
+  jupyterlab:
+    image: jupyter/scipy-notebook
+    container_name: jupyterlab
+    ports:
+      - "8888:8888"
+    volumes:
+      - "jupyter-data:/root/.jupyter"
+    working_dir: /
+#    network_mode: "host"
+    ipc: "host"
+    user: root
+    environment:
+      - "GRANT_SUDO=yes"
+      - "NB_USER=jovyan"
+      - "CHOWN_HOME=yes"
+
+volumes:
+  jupyter-data:
