@@ -12,6 +12,6 @@ Optionally, add desired packages to requirements files in `packages` directory.
 
 Then, run `docker-compose`.
 ```bash
-docker-compose build
-docker-compose up -d
+docker compose build
+docker compose up -d
 ```
